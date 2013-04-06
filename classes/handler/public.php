@@ -137,6 +137,8 @@ class Handler_Public extends Handler {
 				}
 
 				$tpl->setVariable('ARTICLE_CONTENT', $content, true);
+				$tpl->setVariable('ARTICLE_FEED_TITLE', htmlspecialchars($line['feed_title']), true);
+				$tpl->setVariable('ARTICLE_SOURCE', htmlspecialchars($line['site_url']), true);
 
 				$tpl->setVariable('ARTICLE_UPDATED_ATOM',
 					date('c', strtotime($line["updated"])), true);

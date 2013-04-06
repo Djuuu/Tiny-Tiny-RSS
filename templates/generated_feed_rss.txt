@@ -17,6 +17,7 @@
             <link>${ARTICLE_LINK}</link>
             <guid isPermaLink="false">${ARTICLE_ID}</guid>
             <pubDate>${ARTICLE_UPDATED_RFC1123}</pubDate>
+            <source url="${ARTICLE_SOURCE}">${ARTICLE_FEED_TITLE}</source>
 <!-- $BeginBlock category -->
             <category>${ARTICLE_CATEGORY}</category>
 <!-- $EndBlock category -->
