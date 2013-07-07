@@ -94,12 +94,14 @@ class Handler_Public extends Handler {
 			"/public.php?op=rss&id=$feed&key=" .
 			get_feed_access_key($feed, false, $owner_uid);
 
+		if ($format != 'atom') $feed_self_url .= '&format='.$format;
+
 		if (!$feed_site_url) $feed_site_url = get_self_url_prefix();
 
-		if ($format == 'atom') {
+		if ($format == 'atom' || $format == 'rss' ) {
 			$tpl = new MiniTemplator;
 
-			$tpl->readTemplateFromFile("templates/generated_feed.txt");
+			$tpl->readTemplateFromFile("templates/generated_feed_$format.txt");
 
 			$tpl->setVariable('FEED_TITLE', $feed_title, true);
 			$tpl->setVariable('VERSION', VERSION, true);
