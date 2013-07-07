@@ -124,7 +124,7 @@ class Handler_Public extends Handler {
 					htmlspecialchars($orig_guid ? $line['link'] :
 							$this->make_article_tag_uri($line['id'], $line['date_entered'])), true);
 				$tpl->setVariable('ARTICLE_LINK', htmlspecialchars($line['link']), true);
-				$tpl->setVariable('ARTICLE_TITLE', htmlspecialchars($line['title']), true);
+				$tpl->setVariable('ARTICLE_TITLE', htmlspecialchars(html_entity_decode($line['title'], ENT_QUOTES | ENT_XML1 , 'UTF-8')), true);
 				$tpl->setVariable('ARTICLE_EXCERPT', $line["content_preview"], true);
 
 				$content = sanitize($line["content"], false, $owner_uid,
