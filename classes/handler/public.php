@@ -130,6 +130,14 @@ class Handler_Public extends Handler {
 				$content = sanitize($line["content"], false, $owner_uid,
 					$feed_site_url, false, $line["id"]);
 
+				// Remove <html> and <body> tags, not liked by some aggregators (like RSS Graffiti)
+				if ($format == 'rss') {
+					$content = str_ireplace('<html>', '', $content);
+					$content = str_ireplace('</html>', '', $content);
+					$content = str_ireplace('<body>', '', $content);
+					$content = str_ireplace('</body>', '', $content);
+				}
+
 				if ($line['note']) {
 					$content = "<div style=\"$note_style\">Article note: " . $line['note'] . "</div>" .
 						$content;
