@@ -142,6 +142,8 @@ class Handler_Public extends Handler {
 					date('c', strtotime($line["updated"])), true);
 				$tpl->setVariable('ARTICLE_UPDATED_RFC822',
 					date(DATE_RFC822, strtotime($line["updated"])), true);
+				$tpl->setVariable('ARTICLE_UPDATED_RFC1123',
+					date(DATE_RFC1123, strtotime($line["updated"])), true);
 
 				$tpl->setVariable('ARTICLE_AUTHOR', htmlspecialchars($line['author']), true);
 
