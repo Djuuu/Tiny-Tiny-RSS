@@ -94,12 +94,14 @@ class Handler_Public extends Handler {
 			"/public.php?op=rss&id=$feed&key=" .
 			get_feed_access_key($feed, false, $owner_uid);
 
+		if ($format != 'atom') $feed_self_url .= '&format='.$format;
+
 		if (!$feed_site_url) $feed_site_url = get_self_url_prefix();
 
-		if ($format == 'atom') {
+		if ($format == 'atom' || $format == 'rss' ) {
 			$tpl = new MiniTemplator;
 
-			$tpl->readTemplateFromFile("templates/generated_feed.txt");
+			$tpl->readTemplateFromFile("templates/generated_feed_$format.txt");
 
 			$tpl->setVariable('FEED_TITLE', $feed_title, true);
 			$tpl->setVariable('VERSION', VERSION, true);
@@ -122,11 +124,19 @@ class Handler_Public extends Handler {
 					htmlspecialchars($orig_guid ? $line['link'] :
 							$this->make_article_tag_uri($line['id'], $line['date_entered'])), true);
 				$tpl->setVariable('ARTICLE_LINK', htmlspecialchars($line['link']), true);
-				$tpl->setVariable('ARTICLE_TITLE', htmlspecialchars($line['title']), true);
+				$tpl->setVariable('ARTICLE_TITLE', htmlspecialchars(html_entity_decode($line['title'], ENT_QUOTES | ENT_XML1 , 'UTF-8')), true);
 				$tpl->setVariable('ARTICLE_EXCERPT', $line["content_preview"], true);
 
 				$content = sanitize($line["content"], false, $owner_uid,
 					$feed_site_url, false, $line["id"]);
+
+				// Remove <html> and <body> tags, not liked by some aggregators (like RSS Graffiti)
+				if ($format == 'rss') {
+					$content = str_ireplace('<html>', '', $content);
+					$content = str_ireplace('</html>', '', $content);
+					$content = str_ireplace('<body>', '', $content);
+					$content = str_ireplace('</body>', '', $content);
+				}
 
 				if ($line['note']) {
 					$content = "<div style=\"$note_style\">Article note: " . $line['note'] . "</div>" .
@@ -135,11 +145,15 @@ class Handler_Public extends Handler {
 				}
 
 				$tpl->setVariable('ARTICLE_CONTENT', $content, true);
+				$tpl->setVariable('ARTICLE_FEED_TITLE', htmlspecialchars($line['feed_title']), true);
+				$tpl->setVariable('ARTICLE_SOURCE', htmlspecialchars($line['site_url']), true);
 
 				$tpl->setVariable('ARTICLE_UPDATED_ATOM',
 					date('c', strtotime($line["updated"])), true);
 				$tpl->setVariable('ARTICLE_UPDATED_RFC822',
 					date(DATE_RFC822, strtotime($line["updated"])), true);
+				$tpl->setVariable('ARTICLE_UPDATED_RFC1123',
+					date(DATE_RFC1123, strtotime($line["updated"])), true);
 
 				$tpl->setVariable('ARTICLE_AUTHOR', htmlspecialchars($line['author']), true);
 

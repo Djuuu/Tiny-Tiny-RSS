@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $BeginBlock feed -->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>${FEED_TITLE}</title>
+        <description>${FEED_TITLE}</description>
+        <link>${FEED_URL}</link>
+        <atom:link href="${FEED_URL}" rel="self" type="application/rss+xml" />
+        <pubDate>${ARTICLE_UPDATED_RFC1123}</pubDate>
+<!-- $BeginBlock feed_hub -->
+
+<!-- $EndBlock feed_hub -->
+<!-- $BeginBlock entry -->
+        <item>
+            <title><![CDATA[${ARTICLE_TITLE}]]></title>
+            <description><![CDATA[${ARTICLE_CONTENT}]]></description>
+            <link>${ARTICLE_LINK}</link>
+            <guid isPermaLink="false">${ARTICLE_ID}</guid>
+            <pubDate>${ARTICLE_UPDATED_RFC1123}</pubDate>
+            <source url="${ARTICLE_SOURCE}">${ARTICLE_FEED_TITLE}</source>
+<!-- $BeginBlock category -->
+            <category>${ARTICLE_CATEGORY}</category>
+<!-- $EndBlock category -->
+<!-- $BeginBlock enclosure -->
+	<enclosure
+		url="${ARTICLE_ENCLOSURE_URL}" 
+		length="${ARTICLE_ENCLOSURE_LENGTH}" 
+		type="${ARTICLE_ENCLOSURE_TYPE}" />
+<!-- $EndBlock enclosure -->
+        </item>
+<!-- $EndBlock entry -->
+    </channel>
+</rss>
+<!-- $EndBlock feed -->
